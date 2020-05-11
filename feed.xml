@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blake's Blog</title>
+    <description>A small blog</description>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 11 May 2020 13:04:39 -0500</pubDate>
+    <lastBuildDate>Mon, 11 May 2020 13:04:39 -0500</lastBuildDate>
+    <generator>Jekyll v4.0.1</generator>
+    
+      <item>
+        <title>The First Post</title>
+        <description>&lt;h4 id=&quot;an-introduction&quot;&gt;An Introduction&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A journey of a thousand miles begins with a single step.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a blog that I hope to get into the habit of using to share my projects. I think that this will be a good way to show other people what I’ve been up to and also to practice articulating what I’m doing and why. Most of what I plan to do here will just be sharing fun plots and code snippets, but I think that with time I may do a series of posts about statistical concept and linear algebra, with helpful visualizations.&lt;/p&gt;
+
+&lt;p&gt;I’ll leave this post short. Later on this week I’ll add my first real post about a fun project I did in response to Gonzalo Ciruelos’ &lt;a href=&quot;https://gciruelos.com/what-is-the-roundest-country.html&quot;&gt;What is the roundest country?&lt;/a&gt; post that went around a few years ago. Maybe after that I’ll actually lay some groundwork for what I intend to do going forward. Stay tuned!&lt;/p&gt;
+
+&lt;p&gt;Thanks,&lt;br /&gt;
+Blake&lt;/p&gt;
+</description>
+        <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/2020/05/11/an-inaugural-post/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2020/05/11/an-inaugural-post/</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
