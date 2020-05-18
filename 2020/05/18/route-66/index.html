@@ -253,7 +253,7 @@
 
 <h3 id="data-and-loading">Data and Loading</h3>
 
-<p>Like Ciruelos, I used the <a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a> sovereign states dataset. It give you a <code class="highlighter-rouge">.shp</code> file that contains a set of sequences of points for each country. Each set represents a contiguous <em>part</em> of the country and when the sequences of <em>points</em> in each part are connected they create a polygon in the shape of the country.</p>
+<p>Like Ciruelos, I used the <a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a> sovereign states dataset. It gives you a <code class="highlighter-rouge">.shp</code> file that contains a set of sequences of points for each country. Each set represents a contiguous <em>part</em> of the country and when the sequences of <em>points</em> in each part are connected they create a polygon in the shape of the country.</p>
 
 <p>I learned how to read <code class="highlighter-rouge">.shp</code> files with <code class="highlighter-rouge">pyshp</code> and manipulate them with <code class="highlighter-rouge">shapely</code> by following Ciruelos’ code in the original post. It works like this:</p>
 
@@ -307,7 +307,7 @@
   <li>The depth of the road matches the radius of the wheel at every corresponding point.</li>
 </ol>
 
-<p>With the problem defined like this, the authors were able to make roads like this:</p>
+<p>With the problem so defined, the authors were able to make roads like this:</p>
 
 <p><img src="/img/in-post/post-route-66/hall-wagon-road.png" alt="Hall and Wagon's road" /></p>
 
@@ -347,7 +347,7 @@
 
 <p>This is my naive attempt at doing that. The extra <code class="highlighter-rouge">if</code> statement you see is to try to prevent backtracking degrees to make the interpolation look smoother. You’ll see that in a second. This gives me all the information I needed to know about the wheel and the road in terms of <code class="highlighter-rouge">t</code>.</p>
 
-<p>Since <code class="highlighter-rouge">x</code> is the distance between any two points on he border of the country, its cumulative sum should be the displacement at angle <code class="highlighter-rouge">t</code>. Since <code class="highlighter-rouge">y</code> is the distance from the centroid of each point, it should be the depth of the road at angle <code class="highlighter-rouge">t</code>.</p>
+<p>Since <code class="highlighter-rouge">x</code> is the distance between any two points on the border of the country, its cumulative sum should be the displacement at angle <code class="highlighter-rouge">t</code>. Since <code class="highlighter-rouge">y</code> is the distance from the centroid of each point, it should be the depth of the road at angle <code class="highlighter-rouge">t</code>.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(),</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>

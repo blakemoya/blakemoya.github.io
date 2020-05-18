@@ -5,8 +5,8 @@
     <description>A small blog</description>
     <link>https://blakemoya.github.io/</link>
     <atom:link href="https://blakemoya.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 18 May 2020 12:35:26 -0500</pubDate>
-    <lastBuildDate>Mon, 18 May 2020 12:35:26 -0500</lastBuildDate>
+    <pubDate>Mon, 18 May 2020 12:51:58 -0500</pubDate>
+    <lastBuildDate>Mon, 18 May 2020 12:51:58 -0500</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
     
       <item>
@@ -26,7 +26,7 @@
 
 &lt;h3 id=&quot;data-and-loading&quot;&gt;Data and Loading&lt;/h3&gt;
 
-&lt;p&gt;Like Ciruelos, I used the &lt;a href=&quot;http://www.naturalearthdata.com/downloads/10m-cultural-vectors/&quot;&gt;Natural Earth&lt;/a&gt; sovereign states dataset. It give you a &lt;code class=&quot;highlighter-rouge&quot;&gt;.shp&lt;/code&gt; file that contains a set of sequences of points for each country. Each set represents a contiguous &lt;em&gt;part&lt;/em&gt; of the country and when the sequences of &lt;em&gt;points&lt;/em&gt; in each part are connected they create a polygon in the shape of the country.&lt;/p&gt;
+&lt;p&gt;Like Ciruelos, I used the &lt;a href=&quot;http://www.naturalearthdata.com/downloads/10m-cultural-vectors/&quot;&gt;Natural Earth&lt;/a&gt; sovereign states dataset. It gives you a &lt;code class=&quot;highlighter-rouge&quot;&gt;.shp&lt;/code&gt; file that contains a set of sequences of points for each country. Each set represents a contiguous &lt;em&gt;part&lt;/em&gt; of the country and when the sequences of &lt;em&gt;points&lt;/em&gt; in each part are connected they create a polygon in the shape of the country.&lt;/p&gt;
 
 &lt;p&gt;I learned how to read &lt;code class=&quot;highlighter-rouge&quot;&gt;.shp&lt;/code&gt; files with &lt;code class=&quot;highlighter-rouge&quot;&gt;pyshp&lt;/code&gt; and manipulate them with &lt;code class=&quot;highlighter-rouge&quot;&gt;shapely&lt;/code&gt; by following Ciruelos’ code in the original post. It works like this:&lt;/p&gt;
 
@@ -80,7 +80,7 @@
   &lt;li&gt;The depth of the road matches the radius of the wheel at every corresponding point.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;With the problem defined like this, the authors were able to make roads like this:&lt;/p&gt;
+&lt;p&gt;With the problem so defined, the authors were able to make roads like this:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/in-post/post-route-66/hall-wagon-road.png&quot; alt=&quot;Hall and Wagon's road&quot; /&gt;&lt;/p&gt;
 
@@ -120,7 +120,7 @@
 
 &lt;p&gt;This is my naive attempt at doing that. The extra &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; statement you see is to try to prevent backtracking degrees to make the interpolation look smoother. You’ll see that in a second. This gives me all the information I needed to know about the wheel and the road in terms of &lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Since &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; is the distance between any two points on he border of the country, its cumulative sum should be the displacement at angle &lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;. Since &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt; is the distance from the centroid of each point, it should be the depth of the road at angle &lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Since &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; is the distance between any two points on the border of the country, its cumulative sum should be the displacement at angle &lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;. Since &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt; is the distance from the centroid of each point, it should be the depth of the road at angle &lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;.&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scatter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cumsum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
