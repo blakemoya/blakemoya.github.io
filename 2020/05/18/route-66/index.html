@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="A small blog">
+    <meta name="keywords"  content="Blake Moya">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Take Me Home, Country Roads - ">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="What are we up to today?
+">
+    
+    <meta property="article:published_time" content="2020-05-18T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Blake">
+    
+    
+    <meta property="article:tag" content="Python">
+    
+    <meta property="article:tag" content="shapely">
+    
+    
+    <meta property="og:image" content="https://blakemoya.github.io/img/avatar-indirect.jpg">
+    <meta property="og:url" content="https://blakemoya.github.io/2020/05/18/route-66/">
+    <meta property="og:site_name" content="">
+    
+    <title>Take Me Home, Country Roads - </title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://blakemoya.github.io/2020/05/18/route-66/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <!-- Custom highlighting -->
+    <link rel="stylesheet" href="/css/rouge-base16.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Blake's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/in-post/post-route-66/bg-route-66.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/in-post/post-route-66/bg-route-66.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Python" title="Python">Python</a>
+                        
+                        <a class="tag" href="/archive/?tag=shapely" title="shapely">shapely</a>
+                        
+                    </div>
+                    <h1>Take Me Home, Country Roads</h1>
+                    
+                    <h2 class="subheading">Let's make Route 66</h2>
+                    <span class="meta">Posted by Blake on May 18, 2020</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h3 id="what-are-we-up-to-today">What are we up to today?</h3>
+
+<blockquote>
+  <p>Some beautiful paths can’t be discovered without getting lost.<br />
+- Erol Ozan</p>
+</blockquote>
+
+<p>A while ago a friend of mine and I got lost after trying to make sense of the post <a href="https://gciruelos.com/what-is-the-roundest-country.html">What is the roundest country?</a> from <a href="https://github.com/gciruelos">Gonzalo Ciruelos’</a> blog. It had already been around for a few years at that point but the images from it were going around on social media and we had a laugh at it. We wondered how someone could have come to ask that question and wanted to make some funny response to it.</p>
+
+<p>We boiled down the “roundest country” question, as Ciruelos asked it, to “<em>which country would make the best wheel?</em>” Maybe we could make a respond with “<em>which country would make the best ball bearing?</em>” But then my buddy told me we had been going about this all wrong! Why try to find which country would roll the smoothest on a flat road when we could instead find <em>which road could fit a country such that it would <strong>feel</strong> like a smooth ride?</em></p>
+
+<p>Think in the case of the US. If you had a car with America shaped tires, what would the road have to be shaped like for you to have a smooth ride? Here’s how I tried to calculate America’s perfect road, Route 66.</p>
+
+<h3 id="data-and-loading">Data and Loading</h3>
+
+<p>Like Ciruelos, I used the <a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a> sovereign states dataset. It give you a <code class="highlighter-rouge">.shp</code> file that contains a set of sequences of points for each country. Each set represents a contiguous <em>part</em> of the country and when the sequences of <em>points</em> in each part are connected they create a polygon in the shape of the country.</p>
+
+<p>I learned how to read <code class="highlighter-rouge">.shp</code> files with <code class="highlighter-rouge">pyshp</code> and manipulate them with <code class="highlighter-rouge">shapely</code> by following Ciruelos’ code in the original post. It works like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># After necessary imports and path linking...
+</span><span class="n">dat</span> <span class="o">=</span> <span class="n">shapefile</span><span class="p">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">INPUT_FILE</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="n">records</span><span class="p">()</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="n">shapeRecords</span><span class="p">()</span>
+
+<span class="c1"># Use Natural Earth records to pull country by name
+</span><span class="n">name_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
+    <span class="n">name_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">by_name</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">name_list</span><span class="p">))</span>
+<span class="n">coi</span> <span class="o">=</span> <span class="n">countries</span><span class="p">[</span><span class="n">by_name</span><span class="p">[</span><span class="s">'United States of America'</span><span class="p">]]</span>
+
+<span class="c1"># And then plot
+</span><span class="n">coi_wrong</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">points</span><span class="p">)</span>
+<span class="n">wrong_x</span><span class="p">,</span> <span class="n">wrong_y</span> <span class="o">=</span> <span class="n">coi_wrong</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">xy</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wrong_x</span><span class="p">,</span> <span class="n">wrong_y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/img/in-post/post-route-66/2020-05-18-route-66_7_0.svg" alt="svg" /></p>
+
+<p>This plots the entire country, but I would rather have one contiguous part of it. In the original post, Ciruelos selects the largest part of the country. I found that the largest part is generally the first, so I just chose that instead.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mainland_points</span> <span class="o">=</span> <span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">coi_poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">)</span>
+<span class="n">coi_poly</span> <span class="o">=</span> <span class="n">shapely</span><span class="p">.</span><span class="n">affinity</span><span class="p">.</span><span class="n">translate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">,</span>
+                                      <span class="n">xoff</span><span class="o">=-</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span>
+                                      <span class="n">yoff</span><span class="o">=-</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">coi_poly</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">xy</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/img/in-post/post-route-66/2020-05-18-route-66_9_0.svg" alt="svg" /></p>
+
+<p>Now that we have the mainland US free to mess around with, how do we get it to roll?</p>
+
+<h3 id="the-proper-solution">The Proper Solution</h3>
+
+<p>In my (brief) research on the topic of roads and wheels, I found this aptly named article by Leon Hall and Stan Wagon, <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.210.3489&amp;rep=rep1&amp;type=pdf">Roads and Wheels</a>. In it, they address pretty much the same problem I’m working out right now. They have a shape and they want to build a road it will roll smoothly on (also the converse, they have a road and they want a shape that can roll smoothly on it). They define the problem with these conditions:</p>
+
+<ol>
+  <li>The road can be described as a function <code class="highlighter-rouge">f(t) = (x(t), y(t))</code> such that <code class="highlighter-rouge">x(t) &lt; x(t + 1)</code> and <code class="highlighter-rouge">y(t) &lt;= 0</code></li>
+  <li>A wheel can be described as a polar function <code class="highlighter-rouge">r = r(t)</code></li>
+  <li>The center of rotation on the wheel is always directy above the contact point with the road.</li>
+  <li>The distance unraveled on the wheel matches the distance traveled along the road.</li>
+  <li>The depth of the road matches the radius of the wheel at every corresponding point.</li>
+</ol>
+
+<p>With the problem defined like this, the authors were able to make roads like this:</p>
+
+<p><img src="/img/in-post/post-route-66/hall-wagon-road.png" alt="Hall and Wagon's road" /></p>
+
+<p>Looks complicated!</p>
+
+<p>If I wanted a graph this nice, I’d need to describe America with a polar function. I tried to do this by tracing each point in the polygon and getting it’s distance and angle from the centroid, along with it’s distance from the previous point.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ini_theta</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">min_theta</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ctr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">coords</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">coords</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ctr</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ini_theta</span> <span class="o">=</span> <span class="n">theta</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="n">ini_theta</span><span class="p">:</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">180</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This is my naive attempt at doing that. The extra <code class="highlighter-rouge">if</code> statement you see is to try to prevent backtracking degrees to make the interpolation look smoother. You’ll see that in a second. This gives me all the information I needed to know about the wheel and the road in terms of <code class="highlighter-rouge">t</code>.</p>
+
+<p>Since <code class="highlighter-rouge">x</code> is the distance between any two points on he border of the country, its cumulative sum should be the displacement at angle <code class="highlighter-rouge">t</code>. Since <code class="highlighter-rouge">y</code> is the distance from the centroid of each point, it should be the depth of the road at angle <code class="highlighter-rouge">t</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(),</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/img/in-post/post-route-66/2020-05-18-route-66_16_0.svg" alt="svg" /></p>
+
+<p>All according to plan, right? Well, not really. This road starts from the first point in the <code class="highlighter-rouge">.shp</code> file’s list (which seems to just be the northernmost point on the border). I need to use a function like this to identify the starting point of the road, and adjust it accordingly:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">val</span><span class="p">)).</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">idx</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/in-post/post-route-66/2020-05-18-route-66_19_0.svg" alt="svg" /></p>
+
+<p>There! Now to just slide the road back and make some adjustments the <code class="highlighter-rouge">t</code> parameter array (which I’ve squeezed into a big matrix called <code class="highlighter-rouge">data</code>) and we’re ready to define a function! We’ll plug it in to <code class="highlighter-rouge">scipy</code>’s interpolate function so that we can estimate displacement and depth at any angle.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="p">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</code></pre></div></div>
+
+<p>This function should satisfy Hall and Wagon’s conditions. With only a degree angle as input, I can get both the distance along the border and the current depth of my wheel and, consequently, the current distance and depth of my road. When I put it all together though, it looked like this…</p>
+
+<p><img src="/img/in-post/post-route-66/bad_roll.gif" alt="This is awful" /></p>
+
+<p>And though there are definitely some things I could polish up, collisions and jumping like this are to be expected. Hall and Wagon showed that with this method, some shapes <em>have</em> to collide with their road, like this triangle:</p>
+
+<p><img src="/img/in-post/post-route-66/collision.png" alt="A triangle colliding with its road" /></p>
+
+<p>So, I decided that it was more important to make it pretty than to make it right and started a different approach.</p>
+
+<h3 id="the-cookie-cutter-solution">The Cookie Cutter Solution</h3>
+
+<p>I immediately put in place an assumption that the country would both rotate and translate at a constant rate. This was both to reduce the amount of thinking I’d need to do but also to guarantee that whatever I came up with would make a smooth animation like this one from the Wikipedia page for square wheels:</p>
+
+<p><img src="/img/in-post/post-route-66/rolling-square.gif" alt="A square wheel rolling" /></p>
+
+<p>I decided how far the country would roll based on its diameter and a small penalty to minimize slipping based on the difference in the area of the country and its convex hull. Then, I used a loop like this to build the road:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">road</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">)])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">PRC</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">coi_at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># This method gets the position of the country at any point in the rotation
+</span>    <span class="n">road</span> <span class="o">=</span> <span class="n">road</span><span class="p">.</span><span class="n">difference</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And <em>voila!</em> An America-shaped wheel rolling smoothly on an America-shaped road!</p>
+
+<p><img src="/img/in-post/post-route-66/america_roll.gif" alt="That's a rolling country!" /></p>
+
+<p>There’s a noticeable lack of traction at some points but I think I can suspend my disbelief this much for this particular project. By simply changing the name of the country of interest, I can make a similar graphic for any country:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">India</th>
+      <th style="text-align: center">China</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/img/in-post/post-route-66/India_roll.gif" alt="India rolling" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-route-66/China_roll.gif" alt="China rolling" /></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>Colombia</strong></td>
+      <td style="text-align: center"><strong>Sierra Leone</strong></td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/img/in-post/post-route-66/Colombia_roll.gif" alt="Colombia rolling" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-route-66/Sierra Leone_roll.gif" alt="Sierra Leone rolling" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If you want to try it yourself, I’ve made the useful portions of code available as a gist that I’ve embedded below. Just be sure to download the Natural Earth dataset and link it to the script properly.</p>
+
+<script src="https://gist.github.com/blakemoya/f662615c68ff69093a63a23f801b1e1c.js"></script>
+
+<p>Thanks,<br />
+Blake</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/05/11/the-first-post/" data-toggle="tooltip" data-placement="top" title="The First Post">
+                        Previous<br>
+                        <span>The First Post</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    SVG: {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/blakemoya">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/blake-moya">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Blake's Blog 2020 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+<!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
