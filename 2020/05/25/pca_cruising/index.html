@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="A small blog">
+    <meta name="keywords"  content="Blake Moya">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="PCA Cruising - ">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="Let’s take a not-so-grand tour of a PCA
+">
+    
+    <meta property="article:published_time" content="2020-05-25T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Blake">
+    
+    
+    <meta property="article:tag" content="R">
+    
+    <meta property="article:tag" content="FactoMineR">
+    
+    <meta property="article:tag" content="gganimate">
+    
+    
+    <meta property="og:image" content="http://0.0.0.0:4000/img/avatar-indirect.jpg">
+    <meta property="og:url" content="http://0.0.0.0:4000/2020/05/25/pca_cruising/">
+    <meta property="og:site_name" content="">
+    
+    <title>PCA Cruising - </title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2020/05/25/pca_cruising/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <!-- Custom highlighting -->
+    <link rel="stylesheet" href="/css/rouge-base16.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Blake's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/in-post/post-pca-cruising/bg-pca-cruising.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/in-post/post-pca-cruising/bg-pca-cruising.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=R" title="R">R</a>
+                        
+                        <a class="tag" href="/archive/?tag=FactoMineR" title="FactoMineR">FactoMineR</a>
+                        
+                        <a class="tag" href="/archive/?tag=gganimate" title="gganimate">gganimate</a>
+                        
+                    </div>
+                    <h1>PCA Cruising</h1>
+                    
+                    <h2 class="subheading">Let's use gganimate</h2>
+                    <span class="meta">Posted by Blake on May 25, 2020</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h3 id="lets-take-a-not-so-grand-tour-of-a-pca">Let’s take a not-so-grand tour of a PCA</h3>
+
+<blockquote>
+  <p>We’re just <del>PCH</del> PCA cruising…<br />
+- Jaden Smith</p>
+</blockquote>
+
+<p>I was recently inspired by the <a href="https://distill.pub/2020/grand-tour/">this post</a> in <a href="https://distill.pub/">Distill</a> that introduced me to the <a href="https://epubs.siam.org/doi/abs/10.1137/0906011?journalCode=sijcd4">Grand Tour</a>, a linear method for communicating high-dimensional data with animation. It projects high dimensional data down onto (ultimately) every possible 2-dimensional subspace for viewing, in a smoothly transitioning sequence. It’s like rotating the structure around to see it from every angle. A static linear dimensionality reduction method would only show you the angle that contained the most information (in other words, explained the most variance in the data). I thought it could make for some interesting visualizations of certain structures and set my sights on implementing it, or some simple version of it.</p>
+
+<p>![A grand tour of something, with a caption]</p>
+
+<p>I decided that the best way to experiment with this would be to visualize data with uncorrelated variables, because working with orthogonal bases would make animating go by a lot smoother. For this, I decided to do a principal component analysis (PCA) using the library <a href="http://factominer.free.fr/">FactoMineR</a> to re-express a dataset in orthogonal components.</p>
+
+<h4 id="principal-component-analysis-with-factominer">Principal Component Analysis with FactoMineR</h4>
+
+<p>This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR PCA example page on their website</a>, thr <code class="highlighter-rouge">decathlon</code> dataset. I’ll walk you through that now:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">FactoMineR</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Load in the dataset from FactoMineR</span><span class="w">
+</span><span class="n">data</span><span class="p">(</span><span class="n">decathlon</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Conduct PCA on continuous columns</span><span class="w">
+</span><span class="n">res_pca</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">PCA</span><span class="p">(</span><span class="n">decathlon</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">12</span><span class="p">])</span><span class="w">
+</span></code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Scatter</th>
+      <th style="text-align: center">Loadings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/load_in-1.png" alt="" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/load_in-2.png" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This is how the results of a PCA are usually presented. First, we see the observations projected into space spanned by their first two principal components, or dimensions. These dimensions are ranked based on what portion of the total variance in the oberservations they can explain (i.e. 39.66% of the variance in the athletes scores is contained in the scores on Dimension 1). 
+Next, we see the circle of correlations made by plotting the correlation of each native variable with the datas principal components. This gives meaning to the dimensions in the first plot, by showing how the native variables constitute the new bases (i.e. High Jump and Long Jump are positively correlated with dimension one, but Rank isn’t).</p>
+
+<p>How unfortunate that we can only see the first two dimensions here! What if there were soe untold wealth of information hiding just beyond our reach, in Dimension 3 or 4? Well, we could call it up like this:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot.PCA</span><span class="p">(</span><span class="n">res_pca</span><span class="p">,</span><span class="w"> </span><span class="n">axes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/img/in-post/post-pca-cruising/dim_3-1.png" alt="" /><!-- --></p>
+
+<p>But look how much screen space we’ve wasted! It’s the digital age and I want to cram this into the same plot as the first two dimensions on a flat screen. Now you might say “Well, Blake! Why don’t you just look at a scree plot! It’ll show you the relative amount of information between dimensions and then you can decide whether or not to plot them!” I certainly could, like this:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+</span><span class="n">scree_dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pca</span><span class="o">$</span><span class="n">eig</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'component'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as_factor</span><span class="p">(</span><span class="n">component</span><span class="p">))</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">scree_dat</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">component</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`percentage of variance`</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/img/in-post/post-pca-cruising/scree-1.png" alt="" /><!-- --></p>
+
+<p>And this would show me quite clearly that Dimensions 1 and 2 contain ample information to present this data with, and I could avoid this problem completely. But then I wouldn’t have an excuse to learn <code class="highlighter-rouge">gganimate</code>, so we’re going to show off all of these dimensions anyway.</p>
+
+<h3 id="plotting-a-pca-cruise">Plotting a PCA Cruise</h3>
+
+<p>To show every bit of information possible about the data, we’ll be doing a Grand Tour-esque traversal of the data after being projected (realigned is probably a better word) into the component space. Instead of a tour, I’ve decided to call it a PCA cruise because it sounds awfully close to <a href="https://genius.com/Jaden-pch-lyrics">the chorus of that one Jaden Smith song</a>. We’ll show pairs of dimensions sequentially, like this:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># First, we'll plot dimensions 1 and 2</span><span class="w">
+</span><span class="n">plot.PCA</span><span class="p">(</span><span class="n">res_pca</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'none'</span><span class="p">,</span><span class="w"> </span><span class="n">axes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Then, we'll rotate dimension 2 outward and bring in dimension 3</span><span class="w">
+</span><span class="n">plot.PCA</span><span class="p">(</span><span class="n">res_pca</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'none'</span><span class="p">,</span><span class="w"> </span><span class="n">axes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Then, we'll rotate dimension 2 back in to replace dimension 1</span><span class="w">
+</span><span class="n">plot.PCA</span><span class="p">(</span><span class="n">res_pca</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'none'</span><span class="p">,</span><span class="w"> </span><span class="n">axes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Dim.1 by Dim.2</th>
+      <th style="text-align: center">Dim.1 by Dim.3</th>
+      <th style="text-align: center">Dim.2 by Dim.3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/order-1.png" alt="" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/order-2.png" alt="" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/order-3.png" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These will constitute the key frames of the animated plot. This pattern can follow until we’ve seen every dimension plotted. All we need is a properly formatted dataframe to do it.</p>
+
+<h5 id="building-a-tidy-dataframe">Building a tidy dataframe</h5>
+
+<p>I’m a fan of <code class="highlighter-rouge">tidyverse</code> and its syntax. <code class="highlighter-rouge">ggplot</code> and <code class="highlighter-rouge">gganimate</code>, which I’ll be using for this, seem to work best with the tidy syntax, so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:</p>
+
+<ol>
+  <li>Each variable must have its own column.</li>
+  <li>Each observation must have its own row.</li>
+  <li>Each value must have its own cell.</li>
+</ol>
+
+<p>To do this I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from <code class="highlighter-rouge">res_pca</code> and make a matrix showing the dimension configurations I intend to cycle through:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scatter</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pca</span><span class="o">$</span><span class="n">ind</span><span class="o">$</span><span class="n">coord</span><span class="w">
+</span><span class="n">scatter</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;               Dim.1      Dim.2      Dim.3      Dim.4       Dim.5
+&gt; SEBRLE   1.50509908  0.7038928  0.9418516  1.4300073  0.57877082
+&gt; CLAY     1.55741711  0.5554568  2.1891163 -0.5335835 -0.78038352
+&gt; KARPOV   1.59996822  0.4625653  2.0569580 -1.5276391  1.57216651
+&gt; BERNARD  0.08242073 -0.9779441  0.9724700  2.4695691  0.08487193
+&gt; YURKOV  -0.03923536  2.0507210 -1.0717485  1.5007847  1.41509091
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pairs_idx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w">
+                      </span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)[</span><span class="o">-</span><span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">)],</span><span class="w">
+                      </span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)[</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">]),</span><span class="w">
+                    </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
+                    </span><span class="n">byrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="n">pairs_idx</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+&gt; [1,]    1    1    2    2    3    3    4    4    5     5
+&gt; [2,]    2    3    3    4    4    5    5    1    1     2
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pairs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pairs_idx</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">apply</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="w"> </span><span class="nf">return</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">scatter</span><span class="p">)[</span><span class="n">x</span><span class="p">])</span><span class="w"> </span><span class="p">})</span><span class="w">
+</span><span class="n">pairs</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1]    [,2]    [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]    [,10]   
+&gt; [1,] "Dim.1" "Dim.1" "Dim.2" "Dim.2" "Dim.3" "Dim.3" "Dim.4" "Dim.4" "Dim.5" "Dim.5"
+&gt; [2,] "Dim.2" "Dim.3" "Dim.3" "Dim.4" "Dim.4" "Dim.5" "Dim.5" "Dim.1" "Dim.1" "Dim.2"
+</code></pre></div></div>
+
+<p>Each of these configurations is like one “state” of the animation (or “key frame” as I phrased it earlier). I’ll recycle this matrix so that every observation and each dimension can appear once in each state.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">labs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pairs</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">t</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="nf">rep</span><span class="p">(</span><span class="n">each</span><span class="o">=</span><span class="n">nrow</span><span class="p">(</span><span class="n">scatter</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">matrix</span><span class="p">(</span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now I need to get the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> coordinates for each observation at each state. I make the dimension basis vectors to their direction in that state and then scale the to the standard deviation of the data on that dimension. I also make vectors to make clear whether these coordinates belong to an observation point or a dimension arrow and attach names to them.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coords_x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span><span class="w">
+</span><span class="n">coords_y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span><span class="w">
+</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">pairs</span><span class="p">)){</span><span class="w">
+  </span><span class="n">labs_tmp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pairs</span><span class="p">[,</span><span class="w"> </span><span class="n">col</span><span class="p">]</span><span class="w">
+  </span><span class="n">tmp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">scatter</span><span class="p">[,</span><span class="w"> </span><span class="n">labs_tmp</span><span class="p">]</span><span class="w">
+  
+  </span><span class="n">z</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">))</span><span class="w">
+  </span><span class="n">z</span><span class="p">[</span><span class="n">pairs_idx</span><span class="p">[</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sd</span><span class="p">(</span><span class="n">tmp</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">])</span><span class="w">
+  </span><span class="n">coords_x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">coords_x</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w">
+  
+  </span><span class="n">z</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">))</span><span class="w">
+  </span><span class="n">z</span><span class="p">[</span><span class="n">pairs_idx</span><span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sd</span><span class="p">(</span><span class="n">tmp</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">])</span><span class="w">
+  </span><span class="n">coords_y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">coords_y</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">typs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s1">'ind'</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="p">(</span><span class="n">scatter</span><span class="p">)),</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="s1">'var'</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">scatter</span><span class="p">))),</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">pairs</span><span class="p">))</span><span class="w">
+</span><span class="n">nms</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as_factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">scatter</span><span class="p">),</span><span class="w"> </span><span class="n">colnames</span><span class="p">(</span><span class="n">scatter</span><span class="p">)),</span><span class="w"> </span><span class="n">ncol</span><span class="p">(</span><span class="n">pairs</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>And then I squish them all into a now-tidy dataframe!</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_anim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">tibble</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">labs</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w">
+                  </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">labs</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w">
+                  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coords_x</span><span class="p">,</span><span class="w">
+                  </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coords_y</span><span class="p">,</span><span class="w">
+                  </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">typs</span><span class="p">,</span><span class="w">
+                  </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nms</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as_factor</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">' by '</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<h5 id="using-gganimate">Using gganimate</h5>
+
+<p>Now is the moment of truth. To make this animation work, I first need to show that I can cram everything into a <code class="highlighter-rouge">ggplot</code> figure. If I can, then I can divide which geoms show up when based on the value in their state, <code class="highlighter-rouge">s</code>, variable and <code class="highlighter-rouge">gganimate</code> will take care of the rest.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggnewscale</span><span class="p">)</span><span class="w">
+
+</span><span class="n">p</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">df_anim</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_segment</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">xend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">yend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">df_anim</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'var'</span><span class="p">),</span><span class="w">
+               </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+               </span><span class="n">lineend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'round'</span><span class="p">,</span><span class="w">
+               </span><span class="n">linejoin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'mitre'</span><span class="p">,</span><span class="w">
+               </span><span class="n">arrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arrow</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="s1">'cm'</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_brewer</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Dimension'</span><span class="p">,</span><span class="w"> </span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Set1'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">new_scale_color</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w">
+             </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">df_anim</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'ind'</span><span class="p">),</span><span class="w">
+             </span><span class="n">show.legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_grey</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'name_ind'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w">
+</span><span class="n">p</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/img/in-post/post-pca-cruising/ggplot-1.png" alt="" /><!-- --></p>
+
+<p>Awesome! Now to ask gganimate to separate it up by state, maybe even tell us what state we’re in in the title bar, and then render the whole thing as an easily embeddable <code class="highlighter-rouge">.gif</code>!</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">gganimate</span><span class="p">)</span><span class="w">
+
+</span><span class="n">anim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">transition_states</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w">
+                    </span><span class="n">transition_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w">
+                    </span><span class="n">state_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ease_aes</span><span class="p">(</span><span class="s1">'circular-in-out'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s1">'{closest_state}'</span><span class="p">)</span><span class="w">
+</span><span class="n">animate</span><span class="p">(</span><span class="n">anim</span><span class="p">,</span><span class="w"> </span><span class="n">nframes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">300</span><span class="p">,</span><span class="w"> </span><span class="n">fps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="n">renderer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gifski_renderer</span><span class="p">())</span><span class="w">
+</span></code></pre></div></div>
+<p><img src="/img/in-post/post-pca-cruising/individuals.gif" alt="" /></p>
+
+<p>And there you go! A naive version of the grand tour to sequentially observe orthogonal view angles of high-dimensional data. All of the frames in between states aren’t actual projections of the data, but I figured the use-value of this kind of animation to me didn’t justify the time it would take to really work it all out. But it does look neat!</p>
+
+<p>A similar process can be used to animate the circle of correlations too:</p>
+
+<p><img src="/img/in-post/post-pca-cruising/variables.gif" alt="" /></p>
+
+<h3 id="the-tidy-toll-on-memory">The tidy toll on memory</h3>
+
+<p>Storing the data in the way that I did introduced a lot of redundancy, as I mentioned before. To see exactly what the impact on memory was, I wrote a function to call <code class="highlighter-rouge">pryr:object_size()</code> on a <code class="highlighter-rouge">tibble</code> with a certain number of rows and columns. Then I subjected that tibble to th same process I used to convert <code class="highlighter-rouge">df</code> into <code class="highlighter-rouge">df_anim</code> previously and called <code class="highlighter-rouge">pryr::object_size()</code> again. Here’s a side by side of the memory load from <code class="highlighter-rouge">df</code> and <code class="highlighter-rouge">df_anim</code>, each with their own color scale:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Before</th>
+      <th style="text-align: center">After</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/plot_memload_ind-1.png" alt="" /></td>
+      <td style="text-align: center"><img src="/img/in-post/post-pca-cruising/plot_memload_ind-2.png" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can see what looks like artifacts in the first plot, of the memory load of <code class="highlighter-rouge">df</code> before being converted, because of some small scale memory saving techniques in the structure of tibbles. The reason I’ve separated their color scales is because together, the size difference is nearly incomparable:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">mem_load</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Columns</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rows</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bytes</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_viridis_c</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">Class</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="/img/in-post/post-pca-cruising/plot_memload_tog-1.png" alt="" /><!-- --></p>
+
+<p>To get a better picture of the difference, here is the same data plotted in 3d. It’s spinning a little fast so here’s <a href="/interactive/pca-cruising-memload.html">an interactive version of the plot</a> if you want to look around at your own pace.</p>
+
+<p><img src="/img/in-post/post-pca-cruising/3dspin.gif" alt="" /></p>
+
+<h3 id="in-any-case">In any case…</h3>
+
+<p>Though the animated plot is fun to watch, I don’t think that animating PCA results with this Grand Tour-inspired method really gives you much more than style points. If you really want to be able to show all the results of a PCA without wasting all your screen space, try something like <a href="http://factominer.free.fr/graphs/factoshiny.html">Factoshiny</a>. But, I had fun and learned the basics of <code class="highlighter-rouge">gganimate</code> (and learned how hard it is to embed and <code class="highlighter-rouge">rgl</code> widget into a jekyll page). Like last time, I’ve uploaded the basic code for this as a gist if you want to use or improve it:</p>
+
+<script src="https://gist.github.com/blakemoya/8e438e40750b9a68d48be2cee9d31785.js"></script>
+
+<p>Thanks,<br />
+Blake</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/05/18/route-66/" data-toggle="tooltip" data-placement="top" title="Take Me Home, Country Roads">
+                        Previous<br>
+                        <span>Take Me Home, Country Roads</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    SVG: {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/blakemoya">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/blake-moya">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Blake's Blog 2020 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+<!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
