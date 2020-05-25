@@ -5,8 +5,8 @@
     <description>A small blog</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 25 May 2020 14:15:13 -0500</pubDate>
-    <lastBuildDate>Mon, 25 May 2020 14:15:13 -0500</lastBuildDate>
+    <pubDate>Mon, 25 May 2020 14:28:21 -0500</pubDate>
+    <lastBuildDate>Mon, 25 May 2020 14:28:21 -0500</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
     
       <item>
@@ -18,15 +18,13 @@
 - Jaden Smith&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;I was recently inspired by the &lt;a href=&quot;https://distill.pub/2020/grand-tour/&quot;&gt;this post&lt;/a&gt; in &lt;a href=&quot;https://distill.pub/&quot;&gt;Distill&lt;/a&gt; that introduced me to the &lt;a href=&quot;https://epubs.siam.org/doi/abs/10.1137/0906011?journalCode=sijcd4&quot;&gt;Grand Tour&lt;/a&gt;, a linear method for communicating high-dimensional data with animation. It projects high dimensional data down onto (ultimately) every possible 2-dimensional subspace for viewing, in a smoothly transitioning sequence. It’s like rotating the structure around to see it from every angle. A static linear dimensionality reduction method would only show you the angle that contained the most information (in other words, explained the most variance in the data). I thought it could make for some interesting visualizations of certain structures and set my sights on implementing it, or some simple version of it.&lt;/p&gt;
+&lt;p&gt;I was recently inspired by the &lt;a href=&quot;https://distill.pub/2020/grand-tour/&quot;&gt;this post&lt;/a&gt; in &lt;a href=&quot;https://distill.pub/&quot;&gt;Distill&lt;/a&gt; that introduced me to the &lt;a href=&quot;https://epubs.siam.org/doi/abs/10.1137/0906011?journalCode=sijcd4&quot;&gt;Grand Tour&lt;/a&gt;, a linear method for communicating high-dimensional data with animation. It projects high dimensional data down onto (ultimately) every possible 2-dimensional subspace for viewing in a smoothly transitioning sequence. It’s like rotating the structure around to see it from every angle. A static linear dimensionality reduction method would only show you the angle that contained the most information (in other words, explained the most variance in the data). I thought it could make for some interesting visualizations of certain structures and set my sights on implementing it, or some simple version of it.&lt;/p&gt;
 
-&lt;p&gt;![A grand tour of something, with a caption]&lt;/p&gt;
-
-&lt;p&gt;I decided that the best way to experiment with this would be to visualize data with uncorrelated variables, because working with orthogonal bases would make animating go by a lot smoother. For this, I decided to do a principal component analysis (PCA) using the library &lt;a href=&quot;http://factominer.free.fr/&quot;&gt;FactoMineR&lt;/a&gt; to re-express a dataset in orthogonal components.&lt;/p&gt;
+&lt;p&gt;I decided that the best way to experiment with this would be to visualize data with uncorrelated variables, because working with orthogonal bases would allow me to take shortcuts in the animation process. For this, I decided to do a principal component analysis (PCA) using the library &lt;a href=&quot;http://factominer.free.fr/&quot;&gt;FactoMineR&lt;/a&gt; to re-express a dataset in orthogonal components.&lt;/p&gt;
 
 &lt;h4 id=&quot;principal-component-analysis-with-factominer&quot;&gt;Principal Component Analysis with FactoMineR&lt;/h4&gt;
 
-&lt;p&gt;This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the &lt;a href=&quot;http://factominer.free.fr/factomethods/principal-components-analysis.html&quot;&gt;FactoMineR PCA example page on their website&lt;/a&gt;, thr &lt;code class=&quot;highlighter-rouge&quot;&gt;decathlon&lt;/code&gt; dataset. I’ll walk you through that now:&lt;/p&gt;
+&lt;p&gt;This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the &lt;a href=&quot;http://factominer.free.fr/factomethods/principal-components-analysis.html&quot;&gt;FactoMineR PCA example page on their website&lt;/a&gt;, the &lt;code class=&quot;highlighter-rouge&quot;&gt;decathlon&lt;/code&gt; dataset. I’ll walk you through that now:&lt;/p&gt;
 
 &lt;div class=&quot;language-r highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tidyverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FactoMineR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -54,16 +52,16 @@
 &lt;/table&gt;
 
 &lt;p&gt;This is how the results of a PCA are usually presented. First, we see the observations projected into space spanned by their first two principal components, or dimensions. These dimensions are ranked based on what portion of the total variance in the oberservations they can explain (i.e. 39.66% of the variance in the athletes scores is contained in the scores on Dimension 1). 
-Next, we see the circle of correlations made by plotting the correlation of each native variable with the datas principal components. This gives meaning to the dimensions in the first plot, by showing how the native variables constitute the new bases (i.e. High Jump and Long Jump are positively correlated with dimension one, but Rank isn’t).&lt;/p&gt;
+Next, we see the circle of correlations made by plotting the correlation of each native variable with the datas principal components. This gives meaning to the dimensions in the first plot, by showing how the native variables constitute the new bases (i.e. High Jump and Long Jump are positively correlated with Dim.1, but Rank isn’t).&lt;/p&gt;
 
-&lt;p&gt;How unfortunate that we can only see the first two dimensions here! What if there were soe untold wealth of information hiding just beyond our reach, in Dimension 3 or 4? Well, we could call it up like this:&lt;/p&gt;
+&lt;p&gt;How unfortunate that we can only see the first two dimensions here! What if there were some untold wealth of information hiding just beyond our reach, in Dimension 3 or 4? Well, we could call it up like this:&lt;/p&gt;
 
 &lt;div class=&quot;language-r highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plot.PCA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res_pca&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;axes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/in-post/post-pca-cruising/dim_3-1.png&quot; alt=&quot;&quot; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 
-&lt;p&gt;But look how much screen space we’ve wasted! It’s the digital age and I want to cram this into the same plot as the first two dimensions on a flat screen. Now you might say “Well, Blake! Why don’t you just look at a scree plot! It’ll show you the relative amount of information between dimensions and then you can decide whether or not to plot them!” I certainly could, like this:&lt;/p&gt;
+&lt;p&gt;But look how much screen space we’ve wasted! It’s the digital age and I want to cram this into the same plot as the first two dimensions on a flat screen. Now you might say “Well, Blake! Why don’t you just look at a scree plot! It’ll show you the relative amount of information between dimensions and then you can decide whether or not you really need to show all of this information!” I certainly could, like this:&lt;/p&gt;
 
 &lt;div class=&quot;language-r highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ggplot2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scree_dat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res_pca&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eig&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
@@ -112,7 +110,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 &lt;h5 id=&quot;building-a-tidy-dataframe&quot;&gt;Building a tidy dataframe&lt;/h5&gt;
 
-&lt;p&gt;I’m a fan of &lt;code class=&quot;highlighter-rouge&quot;&gt;tidyverse&lt;/code&gt; and its syntax. &lt;code class=&quot;highlighter-rouge&quot;&gt;ggplot&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;gganimate&lt;/code&gt;, which I’ll be using for this, seem to work best with the tidy syntax, so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:&lt;/p&gt;
+&lt;p&gt;I’m a fan of &lt;code class=&quot;highlighter-rouge&quot;&gt;tidyverse&lt;/code&gt; and its syntax. &lt;code class=&quot;highlighter-rouge&quot;&gt;ggplot&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;gganimate&lt;/code&gt;, which I’ll be using for this, seem to work best with the tidy syntax and so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Each variable must have its own column.&lt;/li&gt;
@@ -120,7 +118,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
   &lt;li&gt;Each value must have its own cell.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;To do this I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from &lt;code class=&quot;highlighter-rouge&quot;&gt;res_pca&lt;/code&gt; and make a matrix showing the dimension configurations I intend to cycle through:&lt;/p&gt;
+&lt;p&gt;To do this for each key frame I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from &lt;code class=&quot;highlighter-rouge&quot;&gt;res_pca&lt;/code&gt; and make a matrix showing the dimension configurations I intend to cycle through:&lt;/p&gt;
 
 &lt;div class=&quot;language-r highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;scatter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res_pca&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coord&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scatter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;

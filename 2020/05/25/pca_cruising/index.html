@@ -250,15 +250,13 @@
 - Jaden Smith</p>
 </blockquote>
 
-<p>I was recently inspired by the <a href="https://distill.pub/2020/grand-tour/">this post</a> in <a href="https://distill.pub/">Distill</a> that introduced me to the <a href="https://epubs.siam.org/doi/abs/10.1137/0906011?journalCode=sijcd4">Grand Tour</a>, a linear method for communicating high-dimensional data with animation. It projects high dimensional data down onto (ultimately) every possible 2-dimensional subspace for viewing, in a smoothly transitioning sequence. It’s like rotating the structure around to see it from every angle. A static linear dimensionality reduction method would only show you the angle that contained the most information (in other words, explained the most variance in the data). I thought it could make for some interesting visualizations of certain structures and set my sights on implementing it, or some simple version of it.</p>
+<p>I was recently inspired by the <a href="https://distill.pub/2020/grand-tour/">this post</a> in <a href="https://distill.pub/">Distill</a> that introduced me to the <a href="https://epubs.siam.org/doi/abs/10.1137/0906011?journalCode=sijcd4">Grand Tour</a>, a linear method for communicating high-dimensional data with animation. It projects high dimensional data down onto (ultimately) every possible 2-dimensional subspace for viewing in a smoothly transitioning sequence. It’s like rotating the structure around to see it from every angle. A static linear dimensionality reduction method would only show you the angle that contained the most information (in other words, explained the most variance in the data). I thought it could make for some interesting visualizations of certain structures and set my sights on implementing it, or some simple version of it.</p>
 
-<p>![A grand tour of something, with a caption]</p>
-
-<p>I decided that the best way to experiment with this would be to visualize data with uncorrelated variables, because working with orthogonal bases would make animating go by a lot smoother. For this, I decided to do a principal component analysis (PCA) using the library <a href="http://factominer.free.fr/">FactoMineR</a> to re-express a dataset in orthogonal components.</p>
+<p>I decided that the best way to experiment with this would be to visualize data with uncorrelated variables, because working with orthogonal bases would allow me to take shortcuts in the animation process. For this, I decided to do a principal component analysis (PCA) using the library <a href="http://factominer.free.fr/">FactoMineR</a> to re-express a dataset in orthogonal components.</p>
 
 <h4 id="principal-component-analysis-with-factominer">Principal Component Analysis with FactoMineR</h4>
 
-<p>This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR PCA example page on their website</a>, thr <code class="highlighter-rouge">decathlon</code> dataset. I’ll walk you through that now:</p>
+<p>This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR PCA example page on their website</a>, the <code class="highlighter-rouge">decathlon</code> dataset. I’ll walk you through that now:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">FactoMineR</span><span class="p">)</span><span class="w">
@@ -286,16 +284,16 @@
 </table>
 
 <p>This is how the results of a PCA are usually presented. First, we see the observations projected into space spanned by their first two principal components, or dimensions. These dimensions are ranked based on what portion of the total variance in the oberservations they can explain (i.e. 39.66% of the variance in the athletes scores is contained in the scores on Dimension 1). 
-Next, we see the circle of correlations made by plotting the correlation of each native variable with the datas principal components. This gives meaning to the dimensions in the first plot, by showing how the native variables constitute the new bases (i.e. High Jump and Long Jump are positively correlated with dimension one, but Rank isn’t).</p>
+Next, we see the circle of correlations made by plotting the correlation of each native variable with the datas principal components. This gives meaning to the dimensions in the first plot, by showing how the native variables constitute the new bases (i.e. High Jump and Long Jump are positively correlated with Dim.1, but Rank isn’t).</p>
 
-<p>How unfortunate that we can only see the first two dimensions here! What if there were soe untold wealth of information hiding just beyond our reach, in Dimension 3 or 4? Well, we could call it up like this:</p>
+<p>How unfortunate that we can only see the first two dimensions here! What if there were some untold wealth of information hiding just beyond our reach, in Dimension 3 or 4? Well, we could call it up like this:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot.PCA</span><span class="p">(</span><span class="n">res_pca</span><span class="p">,</span><span class="w"> </span><span class="n">axes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
 
 <p><img src="/img/in-post/post-pca-cruising/dim_3-1.png" alt="" /><!-- --></p>
 
-<p>But look how much screen space we’ve wasted! It’s the digital age and I want to cram this into the same plot as the first two dimensions on a flat screen. Now you might say “Well, Blake! Why don’t you just look at a scree plot! It’ll show you the relative amount of information between dimensions and then you can decide whether or not to plot them!” I certainly could, like this:</p>
+<p>But look how much screen space we’ve wasted! It’s the digital age and I want to cram this into the same plot as the first two dimensions on a flat screen. Now you might say “Well, Blake! Why don’t you just look at a scree plot! It’ll show you the relative amount of information between dimensions and then you can decide whether or not you really need to show all of this information!” I certainly could, like this:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
 </span><span class="n">scree_dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pca</span><span class="o">$</span><span class="n">eig</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
@@ -344,7 +342,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <h5 id="building-a-tidy-dataframe">Building a tidy dataframe</h5>
 
-<p>I’m a fan of <code class="highlighter-rouge">tidyverse</code> and its syntax. <code class="highlighter-rouge">ggplot</code> and <code class="highlighter-rouge">gganimate</code>, which I’ll be using for this, seem to work best with the tidy syntax, so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:</p>
+<p>I’m a fan of <code class="highlighter-rouge">tidyverse</code> and its syntax. <code class="highlighter-rouge">ggplot</code> and <code class="highlighter-rouge">gganimate</code>, which I’ll be using for this, seem to work best with the tidy syntax and so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:</p>
 
 <ol>
   <li>Each variable must have its own column.</li>
@@ -352,7 +350,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
   <li>Each value must have its own cell.</li>
 </ol>
 
-<p>To do this I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from <code class="highlighter-rouge">res_pca</code> and make a matrix showing the dimension configurations I intend to cycle through:</p>
+<p>To do this for each key frame I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from <code class="highlighter-rouge">res_pca</code> and make a matrix showing the dimension configurations I intend to cycle through:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scatter</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pca</span><span class="o">$</span><span class="n">ind</span><span class="o">$</span><span class="n">coord</span><span class="w">
 </span><span class="n">scatter</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
