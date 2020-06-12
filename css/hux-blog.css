@@ -1691,3 +1691,6 @@ img::-moz-selection {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+.html-widget {
+  margin: auto;
+}
