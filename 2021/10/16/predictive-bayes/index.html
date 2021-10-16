@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="A small blog">
+    <meta name="keywords"  content="Blake Moya">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Parallel Predictive Bayes with CUDA - ">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+  Those who have knowledge don’t predict. Those who predict don’t have knowledge.
+- Lao Tzu, badly translated
+
+">
+    
+    <meta property="article:published_time" content="2021-10-16T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Blake">
+    
+    
+    <meta property="article:tag" content="Python">
+    
+    <meta property="article:tag" content="CUDA">
+    
+    
+    <meta property="og:image" content="http://0.0.0.0:4000/img/avatar-indirect.jpg">
+    <meta property="og:url" content="http://0.0.0.0:4000/2021/10/16/predictive-bayes/">
+    <meta property="og:site_name" content="">
+    
+    <title>Parallel Predictive Bayes with CUDA</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2021/10/16/predictive-bayes/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <!-- Custom highlighting -->
+    <link rel="stylesheet" href="/css/rouge-base16.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- add htmlwidgets files -->
+    
+    <!-- end htmlwidgets files -->
+
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Blake's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/in-post/2021-10-16-predictive-bayes/post-bg-predictive-bayes.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/in-post/2021-10-16-predictive-bayes/post-bg-predictive-bayes.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Python" title="Python">Python</a>
+                        
+                        <a class="tag" href="/archive/?tag=CUDA" title="CUDA">CUDA</a>
+                        
+                    </div>
+                    <h1>Parallel Predictive Bayes with CUDA</h1>
+                    
+                    <h2 class="subheading">An introduction to a new paradigm</h2>
+                    <span class="meta">Posted by Blake on October 16, 2021</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<blockquote>
+  <p>Those who have knowledge don’t predict. Those who predict don’t have knowledge.
+- Lao Tzu, badly translated</p>
+</blockquote>
+
+<p>I’d like to share with you all a new perspective on Bayesian prediction that I learned from one of my professors recently. For the full description, check out the paper <a href="https://arxiv.org/abs/2103.15671" target="_blank">Martingale Posteriors (2021)</a> by Edwin Fong, Chris Holmes, and Stephen G. Walker (the professor who taught me all this). For a brief introduction to the ideas in the paper, and also some code demonstrations using PyCuda, read along!</p>
+
+<p>In my experience, Bayesian statistics lures people in with the simplicity of it’s paradigm. Every question you could possibly ask about a parameter is answered by its posterior distribution, which always going to pe proportion to the product of its likelihood and your prior expectations about it, elegantly summed up in the equation</p>
+
+\[p(\theta\mid y) \propto p(\theta)p(y\mid\theta).\]
+
+<p>This definition of the posterior underlies almost all Bayesian inference, perhaps to Bayesians’ own detriment (I even heard a joke last week from one of my colleagues that “Bayesians are all too preoccupied with their own posteriors”). One major benefit of posterior distributions on parameters is that instead of a simple point estimate and confidence interval, it can fully describe our <em>uncertainty</em> around a parameter. <em>Uncertainty</em> in an estimate of a parameter is property of the posterior distribution which basically tells us how wrong the estimate of the parameter could be and how likely it is to be that wrong.</p>
+
+<p>Where does this uncertainty come from though? I had initially learned that uncertainty is essentially contained in the prior distribution imposed by the statistician. If I know nothing about the value of a parameter besides its range (for instance, \(\theta\in[0,1]\)), I may impose a \(\text{Unif}(0, 1)\) prior on it. But, as the Fong, Holmes, and Walker paper points out, this steps too far away from the true problem. Uncertainty about a parameter isn’t contained in a prior distribution designed to represent a statisticians expectations about it, it’s contained in the size of the sample! A parameter, after all, is a function of the population distribution \(p(y_{1:\infty})\). If we had an infinitely large sample we wouldn’t have any uncertainty about what the value of the parameter is, we could just calculate it with no need to predict or estimate!</p>
+
+<p>This idea about the source of uncertainty is the core of this new paradigm I want to introduce y’all to. The big idea that comes from it is this: Why predict the parameter when instead we could predict the population and calculate the parameter?</p>
+
+<p>Clearly, that won’t be as simple as I’m making it sound, but it could be simpler in practice than the Markov chain Monte Carlo (MCMC) methods out there. The basic procedure for sampling the population is this:</p>
+
+<ol>
+  <li>Sample a new observation from the predictive distribution \(p_n(y) = p(y_{n+1}\mid y_{1:n})\).</li>
+  <li>Update the predictive distribution \(p_{n+1}(y) = p(y_{n+2}\mid y_{1:n+1})\).</li>
+  <li>Repeat steps 1 and 2 some arbitrarily large number \(N\) times.</li>
+  <li>Record \(y_{1:n+N}\) as a new population sample and repeat steps 1-3 again some number \(k\) times.</li>
+</ol>
+
+<p>Now we have \(k\) simulated populations on which we can compute \(k\) possible values of the parameter \(\theta\).</p>
+
+<p><em>If</em> the distribution of our \(k\) sampled values of \(\theta\) converges the correct posterior distribution, then this method could prove to be much faster to implement and to run than a conventional MCMC routine. First, because it’s easily parallelizable across the \(k\) sampling chains and second, because there’s only one recursive update that needs to be programmed.</p>
+
+<p>Now, using a trivial example, I want to show you that the distribution of \(\theta\)’s does in fact converge to the posterior distribution as well as demonstrate how this kind of sampling can be coded up and run. (If you want a proof, go check out the paper).</p>
+
+<p>The example I’ll use is the same as that Example 1 in the paper. I wrote code to reproduce this example after talking to Stephen Walker about GPU programming and learning that he had recently been working on a sampling routine that lends itself very well to parallelization. This mini-project was actually my one of first exposures to CUDA!</p>
+
+<p>The problem is structured like this:</p>
+
+\[\begin{align*}
+  \theta \sim{}&amp; \text{Normal}(0, 1) \\
+  y_{1:n}\mid\theta \overset{iid}{\sim}{}&amp; \text{Normal}(\theta, 1).
+\end{align*}\]
+
+<p>Here, \(y\) comes from a normal distribution with a known variance and unknown mean. We assign a standard normal prior on the mean which yields the posterior and posterior predictive distributions:</p>
+
+\[\begin{align*}
+  p(\theta\mid y_{1:n}) ={}&amp; \text{Normal}(\overline{\theta_n}, \overline{\sigma^2_n}) \\
+  p(y_{n+1}\mid y_{1:n}) ={}&amp; \text{Normal}(\overline{\theta_n}, \overline{\sigma^2_n} + 1)
+\end{align*}\]
+
+<p>where</p>
+
+\[\overline{\theta_n} = \frac{\sum_{i=1}^ny_i}{n+1}\text{ and }\overline{\sigma^2_n} = \frac{1}{n+1}.\]
+
+<p>Now, lets write some code to implement predictive resampling in parallel on a GPU and compare the resulting distribution of \(\theta\) to its posterior. In CUDA, the global kernel function will look as follows:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;curand_kernel.h&gt;
+</span>
+<span class="k">extern</span> <span class="s">"C"</span>
+<span class="p">{</span>
+    <span class="n">__global__</span> <span class="kt">void</span> <span class="n">resampler</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">iparams</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">fparams</span><span class="p">,</span> <span class="n">curandState</span> <span class="o">*</span><span class="n">global_state</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/* Set chain parameters */</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">blockDim</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">iparams</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+        <span class="cm">/* Set sampling parameters */</span>
+        <span class="kt">float</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">fparams</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="kt">float</span> <span class="n">n</span> <span class="o">=</span> <span class="n">fparams</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="cm">/* Initialize local_state */</span>
+        <span class="n">curandState</span> <span class="n">local_state</span> <span class="o">=</span> <span class="n">global_state</span><span class="p">[</span><span class="n">m</span><span class="p">];</span>
+        <span class="n">curand_init</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">local_state</span><span class="p">);</span>
+
+        <span class="cm">/* Open sampling loop */</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iter</span> <span class="o">&lt;</span> <span class="n">n_iter</span><span class="p">;</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/* Draw y */</span>
+            <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">+</span> <span class="n">curand_normal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">local_state</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+
+            <span class="cm">/* Update params */</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="cm">/* Record estimate of theta */</span>
+            <span class="n">dest</span><span class="p">[(</span><span class="n">idx</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_iter</span> <span class="o">+</span> <span class="n">iter</span><span class="p">]</span> <span class="o">=</span> <span class="n">theta</span><span class="p">;</span>
+
+            <span class="cm">/* Update local state */</span>
+            <span class="n">global_state</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_state</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here, we have a function which takes as arguments a destination array (for copying results), an array of integer parameters (for \(N\)), an array of floating point parameters (for and initial estimate of \(\theta\) and sample size \(n\) (which is type-cast as a floating point to preempt division issues)), and a global random state for random variate generation. In the sampling loop, it draws a new observation \(y\) given the estimate of the mean \(\theta\) conditioned on all the previously sampled values of \(y\), then updates \(\theta\) with this new value of \(y\) and records it in the destination. This updating process is repeated \(N\) times for each thread opened by the GPU.</p>
+
+<p>To run this code, I decided to compile it with PyCUDA since I wasn’t yet ready to work with the explicit memory allocation required in CUDA. In PyCUDA, I could simply save the above code as a string in Python and pass it to PyCUDA’s <code class="highlighter-rouge">SourceModule</code> function. I’ll include all the Python code at the end of this post.</p>
+
+<p>Using a true value of \(\theta = 2\) I ran the above kernel \(k = 4096\) times with each thread simulating \(N = 1000\) unobserved values of \(y\) into the future. Thanks to GPU parallelization, several hundred and possibly thousands of these threads were able to run concurrently (I’m still learning about CUDA’s scheduling protocol to learn exactly how many threads are running at once). The compilation of the CUDA kernel took 1.8 seconds, but the actual simulation of 4,096,000 possible unobserved \(y\) values took 0.025 seconds. The plot below shows the sampling trajectories of each of the 4096 \(\theta\)’s and the distribution of \(\theta\) values at the 1000th predictive resample. The true posterior is included in dashed black.</p>
+
+<p><img src="/img/in-post/2021-10-16-predictive-bayes/Figure_1.png" alt="Predictive resampled estimate" />
+<em>Here, y-axis represents the estimated values of \(\theta\) and the x-axis for the left hand side shows the number of unobserved values simulated. The x-axis for the right hand side is simple a density measure.</em></p>
+
+<p>Now, clearly this is a very simple example and you may not believe me that, in general, this practice will always give you samples from the posterior at a large enough \(N\). As I said before, check the paper for a formal proof (and find out why they call them “Martingale posteriors”!).</p>
+
+<p>All I wanted to show here was how efficiently – and honestly how simply – these recursive predictive updates can be implemented. In this example, there was still a heavy focus on the prior and posterior distributions of \(\theta\), but in my next post I plan to show you how we can generalize this approach into a nonparametric predictive resampling regime by using a special family of distributions called “copulas”, and of course there will be another code demo. I know today’s demo was a much less descriptive than it should have been, but I’ve been super slow getting this post out and I figured I’d just rip off the bandaid and post it the way it is before it ends up in the backlog for a year. Leave a comment for me below if you want me to make the code more clear for you, or if you think I should focus more on the code than the math next time around!</p>
+
+<p>Anyway, I’ll see you next time for more predictive Bayes.</p>
+
+<p>Thank you,<br />
+Blake</p>
+
+<script src="https://gist.github.com/blakemoya/bb8e6dad5ad13bc5925ba9cfd7cf054f.js"></script>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2021/09/15/a-return-to-blogging/" data-toggle="tooltip" data-placement="top" title="A Return to Blogging">
+                        Previous<br>
+                        <span>A Return to Blogging</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0006" 
+                    href="/archive/?tag=Python"
+                    title="Python"
+                    rel="2">Python</a>
+        
+                <a data-sort="0004" 
+                    href="/archive/?tag=R"
+                    title="R"
+                    rel="4">R</a>
+        
+                <a data-sort="0006" 
+                    href="/archive/?tag=Visualization"
+                    title="Visualization"
+                    rel="2">Visualization</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    SVG: {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "blakemoya";
+    var disqus_identifier = "/2021/10/16/predictive-bayes";
+    var disqus_url = "http://0.0.0.0:4000/2021/10/16/predictive-bayes/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/blakeemoya" target="_blank">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/blakemoya" target="_blank">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/blake-moya" target="_blank">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Blake's Blog 2021 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+<!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
