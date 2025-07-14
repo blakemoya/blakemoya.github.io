@@ -30,8 +30,8 @@
     <meta property="article:tag" content="gganimate">
     
     
-    <meta property="og:image" content="http://0.0.0.0:4000/img/avatar-indirect.jpg">
-    <meta property="og:url" content="http://0.0.0.0:4000/2020/05/25/pca_cruising/">
+    <meta property="og:image" content="https://blakemoya.github.io/img/avatar-indirect.jpg">
+    <meta property="og:url" content="https://blakemoya.github.io/2020/05/25/pca_cruising/">
     <meta property="og:site_name" content="">
     
     <title>PCA Cruising</title>
@@ -43,7 +43,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://0.0.0.0:4000/2020/05/25/pca_cruising/">
+    <link rel="canonical" href="https://blakemoya.github.io/2020/05/25/pca_cruising/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -260,7 +260,7 @@
 
 <h4 id="principal-component-analysis-with-factominer">Principal Component Analysis with FactoMineR</h4>
 
-<p>This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR PCA example page on their website</a>, the <code class="highlighter-rouge">decathlon</code> dataset. I’ll walk you through that now:</p>
+<p>This is actually my first time using FactoMineR so I decided to use the dataset that’s used in the <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR PCA example page on their website</a>, the <code class="language-plaintext highlighter-rouge">decathlon</code> dataset. I’ll walk you through that now:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">FactoMineR</span><span class="p">)</span><span class="w">
@@ -311,7 +311,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <p><img src="/img/in-post/post-pca-cruising/scree-1.png" alt="" /><!-- --></p>
 
-<p>And this would show me quite clearly that Dimensions 1 and 2 contain ample information to present this data with, and I could avoid this problem completely. But then I wouldn’t have an excuse to learn <code class="highlighter-rouge">gganimate</code>, so we’re going to show off all of these dimensions anyway.</p>
+<p>And this would show me quite clearly that Dimensions 1 and 2 contain ample information to present this data with, and I could avoid this problem completely. But then I wouldn’t have an excuse to learn <code class="language-plaintext highlighter-rouge">gganimate</code>, so we’re going to show off all of these dimensions anyway.</p>
 
 <h3 id="plotting-a-pca-cruise">Plotting a PCA Cruise</h3>
 
@@ -346,7 +346,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <h5 id="building-a-tidy-dataframe">Building a tidy dataframe</h5>
 
-<p>I’m a fan of <code class="highlighter-rouge">tidyverse</code> and its syntax. <code class="highlighter-rouge">ggplot</code> and <code class="highlighter-rouge">gganimate</code>, which I’ll be using for this, seem to work best with the tidy syntax and so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:</p>
+<p>I’m a fan of <code class="language-plaintext highlighter-rouge">tidyverse</code> and its syntax. <code class="language-plaintext highlighter-rouge">ggplot</code> and <code class="language-plaintext highlighter-rouge">gganimate</code>, which I’ll be using for this, seem to work best with the tidy syntax and so I’ll need to conform to it to get this done as smoothly as possible. The tidy syntax has three conditions for dataframes:</p>
 
 <ol>
   <li>Each variable must have its own column.</li>
@@ -354,13 +354,13 @@ Next, we see the circle of correlations made by plotting the correlation of each
   <li>Each value must have its own cell.</li>
 </ol>
 
-<p>To do this for each key frame I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from <code class="highlighter-rouge">res_pca</code> and make a matrix showing the dimension configurations I intend to cycle through:</p>
+<p>To do this for each key frame I’ll need to introduce a bit of redundancy. First, I’ll grab the projected coordinates from <code class="language-plaintext highlighter-rouge">res_pca</code> and make a matrix showing the dimension configurations I intend to cycle through:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scatter</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pca</span><span class="o">$</span><span class="n">ind</span><span class="o">$</span><span class="n">coord</span><span class="w">
 </span><span class="n">scatter</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;               Dim.1      Dim.2      Dim.3      Dim.4       Dim.5
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;               Dim.1      Dim.2      Dim.3      Dim.4       Dim.5
 &gt; SEBRLE   1.50509908  0.7038928  0.9418516  1.4300073  0.57877082
 &gt; CLAY     1.55741711  0.5554568  2.1891163 -0.5335835 -0.78038352
 &gt; KARPOV   1.59996822  0.4625653  2.0569580 -1.5276391  1.57216651
@@ -376,7 +376,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 </span><span class="n">pairs_idx</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 &gt; [1,]    1    1    2    2    3    3    4    4    5     5
 &gt; [2,]    2    3    3    4    4    5    5    1    1     2
 </code></pre></div></div>
@@ -386,7 +386,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 </span><span class="n">pairs</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1]    [,2]    [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]    [,10]   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;      [,1]    [,2]    [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]    [,10]   
 &gt; [1,] "Dim.1" "Dim.1" "Dim.2" "Dim.2" "Dim.3" "Dim.3" "Dim.4" "Dim.4" "Dim.5" "Dim.5"
 &gt; [2,] "Dim.2" "Dim.3" "Dim.3" "Dim.4" "Dim.4" "Dim.5" "Dim.5" "Dim.1" "Dim.1" "Dim.2"
 </code></pre></div></div>
@@ -399,7 +399,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
   </span><span class="n">matrix</span><span class="p">(</span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p>Now I need to get the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> coordinates for each observation at each state. I make the dimension basis vectors to their direction in that state and then scale the to the standard deviation of the data on that dimension. I also make vectors to make clear whether these coordinates belong to an observation point or a dimension arrow and attach names to them.</p>
+<p>Now I need to get the <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> coordinates for each observation at each state. I make the dimension basis vectors to their direction in that state and then scale the to the standard deviation of the data on that dimension. I also make vectors to make clear whether these coordinates belong to an observation point or a dimension arrow and attach names to them.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coords_x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span><span class="w">
 </span><span class="n">coords_y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span><span class="w">
@@ -433,7 +433,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <h5 id="using-gganimate">Using gganimate</h5>
 
-<p>Now is the moment of truth. To make this animation work, I first need to show that I can cram everything into a <code class="highlighter-rouge">ggplot</code> figure. If I can, then I can divide which geoms show up when based on the value in their state, <code class="highlighter-rouge">s</code>, variable and <code class="highlighter-rouge">gganimate</code> will take care of the rest.</p>
+<p>Now is the moment of truth. To make this animation work, I first need to show that I can cram everything into a <code class="language-plaintext highlighter-rouge">ggplot</code> figure. If I can, then I can divide which geoms show up when based on the value in their state, <code class="language-plaintext highlighter-rouge">s</code>, variable and <code class="language-plaintext highlighter-rouge">gganimate</code> will take care of the rest.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggnewscale</span><span class="p">)</span><span class="w">
 
@@ -458,7 +458,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <p><img src="/img/in-post/post-pca-cruising/ggplot-1.png" alt="" /><!-- --></p>
 
-<p>Awesome! Now to ask gganimate to separate it up by state, maybe even tell us what state we’re in in the title bar, and then render the whole thing as an easily embeddable <code class="highlighter-rouge">.gif</code>!</p>
+<p>Awesome! Now to ask gganimate to separate it up by state, maybe even tell us what state we’re in in the title bar, and then render the whole thing as an easily embeddable <code class="language-plaintext highlighter-rouge">.gif</code>!</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">gganimate</span><span class="p">)</span><span class="w">
 
@@ -480,7 +480,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <h3 id="the-tidy-toll-on-memory">The tidy toll on memory</h3>
 
-<p>Storing the data in the way that I did introduced a lot of redundancy, as I mentioned before. To see exactly what the impact on memory was, I wrote a function to call <code class="highlighter-rouge">pryr:object_size()</code> on a <code class="highlighter-rouge">tibble</code> with a certain number of rows and columns. Then I subjected that tibble to th same process I used to convert <code class="highlighter-rouge">df</code> into <code class="highlighter-rouge">df_anim</code> previously and called <code class="highlighter-rouge">pryr::object_size()</code> again. Here’s a side by side of the memory load from <code class="highlighter-rouge">df</code> and <code class="highlighter-rouge">df_anim</code>, each with their own color scale:</p>
+<p>Storing the data in the way that I did introduced a lot of redundancy, as I mentioned before. To see exactly what the impact on memory was, I wrote a function to call <code class="language-plaintext highlighter-rouge">pryr:object_size()</code> on a <code class="language-plaintext highlighter-rouge">tibble</code> with a certain number of rows and columns. Then I subjected that tibble to th same process I used to convert <code class="language-plaintext highlighter-rouge">df</code> into <code class="language-plaintext highlighter-rouge">df_anim</code> previously and called <code class="language-plaintext highlighter-rouge">pryr::object_size()</code> again. Here’s a side by side of the memory load from <code class="language-plaintext highlighter-rouge">df</code> and <code class="language-plaintext highlighter-rouge">df_anim</code>, each with their own color scale:</p>
 
 <table>
   <thead>
@@ -497,7 +497,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
   </tbody>
 </table>
 
-<p>You can see what looks like artifacts in the first plot, of the memory load of <code class="highlighter-rouge">df</code> before being converted, because of some small scale memory saving techniques in the structure of tibbles. The reason I’ve separated their color scales is because together, the size difference is nearly incomparable:</p>
+<p>You can see what looks like artifacts in the first plot, of the memory load of <code class="language-plaintext highlighter-rouge">df</code> before being converted, because of some small scale memory saving techniques in the structure of tibbles. The reason I’ve separated their color scales is because together, the size difference is nearly incomparable:</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">mem_load</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Columns</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rows</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bytes</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_tile</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
@@ -513,7 +513,7 @@ Next, we see the circle of correlations made by plotting the correlation of each
 
 <h3 id="in-any-case">In any case…</h3>
 
-<p>Though the animated plot is fun to watch, I don’t think that animating PCA results with this Grand Tour-inspired method really gives you much more than style points. If you really want to be able to show all the results of a PCA without wasting all your screen space, try something like <a href="http://factominer.free.fr/graphs/factoshiny.html">Factoshiny</a>. But, I had fun and learned the basics of <code class="highlighter-rouge">gganimate</code> (and learned how hard it is to embed and <code class="highlighter-rouge">rgl</code> widget into a jekyll page). Like last time, I’ve uploaded the basic code for this as a gist if you want to use or improve it:</p>
+<p>Though the animated plot is fun to watch, I don’t think that animating PCA results with this Grand Tour-inspired method really gives you much more than style points. If you really want to be able to show all the results of a PCA without wasting all your screen space, try something like <a href="http://factominer.free.fr/graphs/factoshiny.html">Factoshiny</a>. But, I had fun and learned the basics of <code class="language-plaintext highlighter-rouge">gganimate</code> (and learned how hard it is to embed and <code class="language-plaintext highlighter-rouge">rgl</code> widget into a jekyll page). Like last time, I’ve uploaded the basic code for this as a gist if you want to use or improve it:</p>
 
 <script src="https://gist.github.com/blakemoya/8e438e40750b9a68d48be2cee9d31785.js"></script>
 
@@ -592,17 +592,17 @@ Blake</p>
         
         
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Python"
                     title="Python"
                     rel="2">Python</a>
         
-                <a data-sort="0004" 
+                <a data-sort="0003" 
                     href="/archive/?tag=R"
                     title="R"
                     rel="4">R</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Visualization"
                     title="Visualization"
                     rel="2">Visualization</a>
@@ -649,7 +649,7 @@ Blake</p>
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "blakemoya";
     var disqus_identifier = "/2020/05/25/pca_cruising";
-    var disqus_url = "http://0.0.0.0:4000/2020/05/25/pca_cruising/";
+    var disqus_url = "https://blakemoya.github.io/2020/05/25/pca_cruising/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -747,7 +747,7 @@ Blake</p>
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; Blake's Blog 2021 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                    Copyright &copy; Blake's Blog 2025 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
                 </p>
             </div>
         </div>
