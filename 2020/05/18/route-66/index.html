@@ -28,8 +28,8 @@
     <meta property="article:tag" content="shapely">
     
     
-    <meta property="og:image" content="http://0.0.0.0:4000/img/avatar-indirect.jpg">
-    <meta property="og:url" content="http://0.0.0.0:4000/2020/05/18/route-66/">
+    <meta property="og:image" content="https://blakemoya.github.io/img/avatar-indirect.jpg">
+    <meta property="og:url" content="https://blakemoya.github.io/2020/05/18/route-66/">
     <meta property="og:site_name" content="">
     
     <title>Take Me Home, Country Roads</title>
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://0.0.0.0:4000/2020/05/18/route-66/">
+    <link rel="canonical" href="https://blakemoya.github.io/2020/05/18/route-66/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -258,27 +258,27 @@
 
 <h3 id="data-and-loading">Data and Loading</h3>
 
-<p>Like Ciruelos, I used the <a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a> sovereign states dataset. It gives you a <code class="highlighter-rouge">.shp</code> file that contains a set of sequences of points for each country. Each set represents a contiguous <em>part</em> of the country and when the sequences of <em>points</em> in each part are connected they create a polygon in the shape of the country.</p>
+<p>Like Ciruelos, I used the <a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/">Natural Earth</a> sovereign states dataset. It gives you a <code class="language-plaintext highlighter-rouge">.shp</code> file that contains a set of sequences of points for each country. Each set represents a contiguous <em>part</em> of the country and when the sequences of <em>points</em> in each part are connected they create a polygon in the shape of the country.</p>
 
-<p>I learned how to read <code class="highlighter-rouge">.shp</code> files with <code class="highlighter-rouge">pyshp</code> and manipulate them with <code class="highlighter-rouge">shapely</code> by following Ciruelos’ code in the original post. It works like this:</p>
+<p>I learned how to read <code class="language-plaintext highlighter-rouge">.shp</code> files with <code class="language-plaintext highlighter-rouge">pyshp</code> and manipulate them with <code class="language-plaintext highlighter-rouge">shapely</code> by following Ciruelos’ code in the original post. It works like this:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># After necessary imports and path linking...
-</span><span class="n">dat</span> <span class="o">=</span> <span class="n">shapefile</span><span class="p">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">INPUT_FILE</span><span class="p">)</span>
-<span class="n">meta</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="n">records</span><span class="p">()</span>
-<span class="n">countries</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="n">shapeRecords</span><span class="p">()</span>
+</span><span class="n">dat</span> <span class="o">=</span> <span class="n">shapefile</span><span class="p">.</span><span class="nc">Reader</span><span class="p">(</span><span class="n">INPUT_FILE</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="nf">records</span><span class="p">()</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="n">dat</span><span class="p">.</span><span class="nf">shapeRecords</span><span class="p">()</span>
 
 <span class="c1"># Use Natural Earth records to pull country by name
 </span><span class="n">name_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
-    <span class="n">name_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-<span class="n">by_name</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">name_list</span><span class="p">))</span>
-<span class="n">coi</span> <span class="o">=</span> <span class="n">countries</span><span class="p">[</span><span class="n">by_name</span><span class="p">[</span><span class="s">'United States of America'</span><span class="p">]]</span>
+    <span class="n">name_list</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">by_name</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">name_list</span><span class="p">))</span>
+<span class="n">coi</span> <span class="o">=</span> <span class="n">countries</span><span class="p">[</span><span class="n">by_name</span><span class="p">[</span><span class="sh">'</span><span class="s">United States of America</span><span class="sh">'</span><span class="p">]]</span>
 
 <span class="c1"># And then plot
-</span><span class="n">coi_wrong</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">points</span><span class="p">)</span>
+</span><span class="n">coi_wrong</span> <span class="o">=</span> <span class="nc">Polygon</span><span class="p">(</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">points</span><span class="p">)</span>
 <span class="n">wrong_x</span><span class="p">,</span> <span class="n">wrong_y</span> <span class="o">=</span> <span class="n">coi_wrong</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">xy</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wrong_x</span><span class="p">,</span> <span class="n">wrong_y</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">wrong_x</span><span class="p">,</span> <span class="n">wrong_y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p><img src="/img/in-post/post-route-66/2020-05-18-route-66_7_0.svg" alt="svg" /></p>
@@ -286,14 +286,14 @@
 <p>This plots the entire country, but I would rather have one contiguous part of it. In the original post, Ciruelos selects the largest part of the country. I found that the largest part is generally the first, so I just chose that instead.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mainland_points</span> <span class="o">=</span> <span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">coi</span><span class="p">.</span><span class="n">shape</span><span class="p">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">coi_poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">)</span>
-<span class="n">coi_poly</span> <span class="o">=</span> <span class="n">shapely</span><span class="p">.</span><span class="n">affinity</span><span class="p">.</span><span class="n">translate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">,</span>
+<span class="n">coi_poly</span> <span class="o">=</span> <span class="nc">Polygon</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">)</span>
+<span class="n">coi_poly</span> <span class="o">=</span> <span class="n">shapely</span><span class="p">.</span><span class="n">affinity</span><span class="p">.</span><span class="nf">translate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">,</span>
                                       <span class="n">xoff</span><span class="o">=-</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span>
                                       <span class="n">yoff</span><span class="o">=-</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">coi_poly</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">xy</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p><img src="/img/in-post/post-route-66/2020-05-18-route-66_9_0.svg" alt="svg" /></p>
@@ -305,8 +305,8 @@
 <p>In my (brief) research on the topic of roads and wheels, I found this aptly named article by Leon Hall and Stan Wagon, <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.210.3489&amp;rep=rep1&amp;type=pdf">Roads and Wheels</a>. In it, they address pretty much the same problem I’m working out right now. They have a shape and they want to build a road it will roll smoothly on (also the converse, they have a road and they want a shape that can roll smoothly on it). They define the problem with these conditions:</p>
 
 <ol>
-  <li>The road can be described as a function <code class="highlighter-rouge">f(t) = (x(t), y(t))</code> such that <code class="highlighter-rouge">x(t) &lt; x(t + 1)</code> and <code class="highlighter-rouge">y(t) &lt;= 0</code></li>
-  <li>A wheel can be described as a polar function <code class="highlighter-rouge">r = r(t)</code></li>
+  <li>The road can be described as a function <code class="language-plaintext highlighter-rouge">f(t) = (x(t), y(t))</code> such that <code class="language-plaintext highlighter-rouge">x(t) &lt; x(t + 1)</code> and <code class="language-plaintext highlighter-rouge">y(t) &lt;= 0</code></li>
+  <li>A wheel can be described as a polar function <code class="language-plaintext highlighter-rouge">r = r(t)</code></li>
   <li>The center of rotation on the wheel is always directy above the contact point with the road.</li>
   <li>The distance unraveled on the wheel matches the distance traveled along the road.</li>
   <li>The depth of the road matches the radius of the wheel at every corresponding point.</li>
@@ -325,55 +325,55 @@
 <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">ini_theta</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">min_theta</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">ctr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">coords</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">coords</span><span class="p">):</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span>
-    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ctr</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
+<span class="n">ctr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">centroid</span><span class="p">.</span><span class="n">coords</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">coi_poly</span><span class="p">.</span><span class="n">exterior</span><span class="p">.</span><span class="n">coords</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arctan2</span><span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">norm</span><span class="p">(</span><span class="n">ctr</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">ini_theta</span> <span class="o">=</span> <span class="n">theta</span>
-        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">y</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
-        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">x</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="n">ini_theta</span><span class="p">:</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">180</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">t</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">x</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
-        <span class="n">y</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">mainland_points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">x</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">norm</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>This is my naive attempt at doing that. The extra <code class="highlighter-rouge">if</code> statement you see is to try to prevent backtracking degrees to make the interpolation look smoother. You’ll see that in a second. This gives me all the information I needed to know about the wheel and the road in terms of <code class="highlighter-rouge">t</code>.</p>
+<p>This is my naive attempt at doing that. The extra <code class="language-plaintext highlighter-rouge">if</code> statement you see is to try to prevent backtracking degrees to make the interpolation look smoother. You’ll see that in a second. This gives me all the information I needed to know about the wheel and the road in terms of <code class="language-plaintext highlighter-rouge">t</code>.</p>
 
-<p>Since <code class="highlighter-rouge">x</code> is the distance between any two points on the border of the country, its cumulative sum should be the displacement at angle <code class="highlighter-rouge">t</code>. Since <code class="highlighter-rouge">y</code> is the distance from the centroid of each point, it should be the depth of the road at angle <code class="highlighter-rouge">t</code>.</p>
+<p>Since <code class="language-plaintext highlighter-rouge">x</code> is the distance between any two points on the border of the country, its cumulative sum should be the displacement at angle <code class="language-plaintext highlighter-rouge">t</code>. Since <code class="language-plaintext highlighter-rouge">y</code> is the distance from the centroid of each point, it should be the depth of the road at angle <code class="language-plaintext highlighter-rouge">t</code>.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(),</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">cumsum</span><span class="p">(),</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p><img src="/img/in-post/post-route-66/2020-05-18-route-66_16_0.svg" alt="svg" /></p>
 
-<p>All according to plan, right? Well, not really. This road starts from the first point in the <code class="highlighter-rouge">.shp</code> file’s list (which seems to just be the northernmost point on the border). I need to use a function like this to identify the starting point of the road, and adjust it accordingly:</p>
+<p>All according to plan, right? Well, not really. This road starts from the first point in the <code class="language-plaintext highlighter-rouge">.shp</code> file’s list (which seems to just be the northernmost point on the border). I need to use a function like this to identify the starting point of the road, and adjust it accordingly:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">val</span><span class="p">)).</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">val</span><span class="p">)).</span><span class="nf">argmin</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">idx</span>
 
-<span class="n">start</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p><img src="/img/in-post/post-route-66/2020-05-18-route-66_19_0.svg" alt="svg" /></p>
 
-<p>There! Now to just slide the road back and make some adjustments the <code class="highlighter-rouge">t</code> parameter array (which I’ve squeezed into a big matrix called <code class="highlighter-rouge">data</code>) and we’re ready to define a function! We’ll plug it in to <code class="highlighter-rouge">scipy</code>’s interpolate function so that we can estimate displacement and depth at any angle.</p>
+<p>There! Now to just slide the road back and make some adjustments the <code class="language-plaintext highlighter-rouge">t</code> parameter array (which I’ve squeezed into a big matrix called <code class="language-plaintext highlighter-rouge">data</code>) and we’re ready to define a function! We’ll plug it in to <code class="language-plaintext highlighter-rouge">scipy</code>’s interpolate function so that we can estimate displacement and depth at any angle.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="p">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="p">.</span><span class="nf">interp1d</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </code></pre></div></div>
 
 <p>This function should satisfy Hall and Wagon’s conditions. With only a degree angle as input, I can get both the distance along the border and the current depth of my wheel and, consequently, the current distance and depth of my road. When I put it all together though, it looked like this…</p>
@@ -394,11 +394,11 @@
 
 <p>I decided how far the country would roll based on its diameter and a small penalty to minimize slipping based on the difference in the area of the country and its convex hull. Then, I used a loop like this to build the road:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">road</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">)])</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">road</span> <span class="o">=</span> <span class="nc">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="nf">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="nf">coi_at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">centroid</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">lim</span><span class="p">)])</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">PRC</span><span class="p">):</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">coi_at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># This method gets the position of the country at any point in the rotation
-</span>    <span class="n">road</span> <span class="o">=</span> <span class="n">road</span><span class="p">.</span><span class="n">difference</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">PRC</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nf">coi_at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># This method gets the position of the country at any point in the rotation
+</span>    <span class="n">road</span> <span class="o">=</span> <span class="n">road</span><span class="p">.</span><span class="nf">difference</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>And <em>voila!</em> An America-shaped wheel rolling smoothly on an America-shaped road!</p>
@@ -511,17 +511,17 @@ Blake</p>
         
         
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Python"
                     title="Python"
                     rel="2">Python</a>
         
-                <a data-sort="0004" 
+                <a data-sort="0003" 
                     href="/archive/?tag=R"
                     title="R"
                     rel="4">R</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Visualization"
                     title="Visualization"
                     rel="2">Visualization</a>
@@ -568,7 +568,7 @@ Blake</p>
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "blakemoya";
     var disqus_identifier = "/2020/05/18/route-66";
-    var disqus_url = "http://0.0.0.0:4000/2020/05/18/route-66/";
+    var disqus_url = "https://blakemoya.github.io/2020/05/18/route-66/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -666,7 +666,7 @@ Blake</p>
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; Blake's Blog 2021 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                    Copyright &copy; Blake's Blog 2025 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
                 </p>
             </div>
         </div>

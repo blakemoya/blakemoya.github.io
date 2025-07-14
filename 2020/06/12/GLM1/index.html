@@ -30,8 +30,8 @@
     <meta property="article:tag" content="Visualization">
     
     
-    <meta property="og:image" content="http://0.0.0.0:4000/img/avatar-indirect.jpg">
-    <meta property="og:url" content="http://0.0.0.0:4000/2020/06/12/GLM1/">
+    <meta property="og:image" content="https://blakemoya.github.io/img/avatar-indirect.jpg">
+    <meta property="og:url" content="https://blakemoya.github.io/2020/06/12/GLM1/">
     <meta property="og:site_name" content="">
     
     <title>Generalizing Linear Models: Part 1</title>
@@ -43,7 +43,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://0.0.0.0:4000/2020/06/12/GLM1/">
+    <link rel="canonical" href="https://blakemoya.github.io/2020/06/12/GLM1/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -273,7 +273,7 @@
 
 <h3 id="the-data">The Data</h3>
 
-<p>I’ll be using the <code class="highlighter-rouge">ToothGrowth</code> dataset to start as an example. Its documentation states:</p>
+<p>I’ll be using the <code class="language-plaintext highlighter-rouge">ToothGrowth</code> dataset to start as an example. Its documentation states:</p>
 
 <blockquote>
   <p>The response is the length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC).
@@ -309,7 +309,7 @@
   </tbody>
 </table>
 
-<p>Each cell in this table is a bucket where 10 <code class="highlighter-rouge">Length</code> observations have been averaged. The goal is ultimately to develop a model that describes <code class="highlighter-rouge">Length</code> in terms of information hidden in the <code class="highlighter-rouge">Supplement</code> and <code class="highlighter-rouge">Dosage</code> variables. In this data, there are only six unique conditions for the 60 observations to fit within. That means best model we can create will give us, at most, six different possible estimates for any <code class="highlighter-rouge">Length</code> we try to predict. Let’s try to visualize this.</p>
+<p>Each cell in this table is a bucket where 10 <code class="language-plaintext highlighter-rouge">Length</code> observations have been averaged. The goal is ultimately to develop a model that describes <code class="language-plaintext highlighter-rouge">Length</code> in terms of information hidden in the <code class="language-plaintext highlighter-rouge">Supplement</code> and <code class="language-plaintext highlighter-rouge">Dosage</code> variables. In this data, there are only six unique conditions for the 60 observations to fit within. That means best model we can create will give us, at most, six different possible estimates for any <code class="language-plaintext highlighter-rouge">Length</code> we try to predict. Let’s try to visualize this.</p>
 
 <h3 id="informative-visualizations">Informative Visualizations</h3>
 
@@ -334,7 +334,7 @@
 
 <h4 id="height-heatmaps-and-tables">Height, Heatmaps, and Tables</h4>
 
-<p>The reason I want to use 3d bar charts specifically is because when you click-and-drag to look at the bars from above, it’s like looking at a data table from before (without marginal means) and having the data climb out from the screen to you. With three dimensions, we can spatially discriminate between <code class="highlighter-rouge">Supplement</code> conditions. I think we can reuse color to be more meaningful, so how about we color the bars based on their height.</p>
+<p>The reason I want to use 3d bar charts specifically is because when you click-and-drag to look at the bars from above, it’s like looking at a data table from before (without marginal means) and having the data climb out from the screen to you. With three dimensions, we can spatially discriminate between <code class="language-plaintext highlighter-rouge">Supplement</code> conditions. I think we can reuse color to be more meaningful, so how about we color the bars based on their height.</p>
 
 <!--html_preserve-->
 <div id="rgl5717" style="width:504px;height:504px;" class="rglWebGL html-widget"></div>
@@ -488,17 +488,17 @@ Blake</p>
         
         
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Python"
                     title="Python"
                     rel="2">Python</a>
         
-                <a data-sort="0004" 
+                <a data-sort="0003" 
                     href="/archive/?tag=R"
                     title="R"
                     rel="4">R</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0005" 
                     href="/archive/?tag=Visualization"
                     title="Visualization"
                     rel="2">Visualization</a>
@@ -525,7 +525,7 @@ Blake</p>
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "blakemoya";
     var disqus_identifier = "/2020/06/12/GLM1";
-    var disqus_url = "http://0.0.0.0:4000/2020/06/12/GLM1/";
+    var disqus_url = "https://blakemoya.github.io/2020/06/12/GLM1/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -623,7 +623,7 @@ Blake</p>
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; Blake's Blog 2021 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
+                    Copyright &copy; Blake's Blog 2025 | Powered by <a href="http://huangxuan.me">Hux Blog</a>
                 </p>
             </div>
         </div>
